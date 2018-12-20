@@ -1,0 +1,195 @@
+﻿Parallelism
+Parallel computing involves dividing a problem into subproblems, solving those problems simultaneously (in parallel, with each subproblem running in a separate thread), and then combining the results of the solutions to the subproblems. Java SE provides the fork/join framework, which enables you to more easily implement parallel computing in your applications. However, with this framework, you must specify how the problems are subdivided (partitioned). With aggregate operations, the Java runtime performs this partitioning and combining of solutions for you.
+
+One difficulty in implementing parallelism in applications that use collections is that collections are not thread-safe, which means that multiple threads cannot manipulate a collection without introducing thread interference or memory consistency errors. The Collections Framework provides synchronization wrappers, which add automatic synchronization to an arbitrary collection, making it thread-safe. However, synchronization introduces thread contention. You want to avoid thread contention because it prevents threads from running in parallel. Aggregate operations and parallel streams enable you to implement parallelism with non-thread-safe collections provided that you do not modify the collection while you are operating on it.
+
+Note that parallelism is not automatically faster than performing operations serially, although it can be if you have enough data and processor cores. While aggregate operations enable you to more easily implement parallelism, it is still your responsibility to determine if your application is suitable for parallelism.
+
+This section covers the following topics:
+
+Executing Streams in Parallel
+Concurrent Reduction
+Ordering
+Side Effects
+Laziness
+Interference
+Stateful Lambda Expressions
+You can find the code excerpts described in this section in the example ParallelismExamples.
+
+Executing Streams in Parallel
+You can execute streams in serial or in parallel. When a stream executes in parallel, the Java runtime partitions the stream into multiple substreams. Aggregate operations iterate over and process these substreams in parallel and then combine the results.
+
+When you create a stream, it is always a serial stream unless otherwise specified. To create a parallel stream, invoke the operation Collection.parallelStream. Alternatively, invoke the operation BaseStream.parallel. For example, the following statement calculates the average age of all male members in parallel:
+
+double average = roster
+    .parallelStream()
+    .filter(p -> p.getGender() == Person.Sex.MALE)
+    .mapToInt(Person::getAge)
+    .average()
+    .getAsDouble();
+Concurrent Reduction
+Consider again the following example (which is described in the section Reduction) that groups members by gender. This example invokes the collect operation, which reduces the collection roster into a Map:
+
+Map<Person.Sex, List<Person>> byGender =
+    roster
+        .stream()
+        .collect(
+            Collectors.groupingBy(Person::getGender));
+The following is the parallel equivalent:
+
+ConcurrentMap<Person.Sex, List<Person>> byGender =
+    roster
+        .parallelStream()
+        .collect(
+            Collectors.groupingByConcurrent(Person::getGender));
+This is called a concurrent reduction. The Java runtime performs a concurrent reduction if all of the the following are true for a particular pipeline that contains the collect operation:
+
+The stream is parallel.
+The parameter of the collect operation, the collector, has the characteristic Collector.Characteristics.CONCURRENT. To determine the characteristics of a collector, invoke the Collector.characteristics method.
+Either the stream is unordered, or the collector has the characteristic Collector.Characteristics.UNORDERED. To ensure that the stream is unordered, invoke the BaseStream.unordered operation.
+Note: This example returns an instance of ConcurrentMap instead of Map and invokes the groupingByConcurrent operation instead of groupingBy. (See the section Concurrent Collections for more information about ConcurrentMap.) Unlike the operation groupingByConcurrent, the operation groupingBy performs poorly with parallel streams. (This is because it operates by merging two maps by key, which is computationally expensive.) Similarly, the operation Collectors.toConcurrentMap performs better with parallel streams than the operation Collectors.toMap.
+
+Ordering
+The order in which a pipeline processes the elements of a stream depends on whether the stream is executed in serial or in parallel, the source of the stream, and intermediate operations. For example, consider the following example that prints the elements of an instance of ArrayList with the forEach operation several times:
+
+Integer[] intArray = {1, 2, 3, 4, 5, 6, 7, 8 };
+List<Integer> listOfIntegers =
+    new ArrayList<>(Arrays.asList(intArray));
+
+System.out.println("listOfIntegers:");
+listOfIntegers
+    .stream()
+    .forEach(e -> System.out.print(e + " "));
+System.out.println("");
+
+System.out.println("listOfIntegers sorted in reverse order:");
+Comparator<Integer> normal = Integer::compare;
+Comparator<Integer> reversed = normal.reversed(); 
+Collections.sort(listOfIntegers, reversed);  
+listOfIntegers
+    .stream()
+    .forEach(e -> System.out.print(e + " "));
+System.out.println("");
+     
+System.out.println("Parallel stream");
+listOfIntegers
+    .parallelStream()
+    .forEach(e -> System.out.print(e + " "));
+System.out.println("");
+    
+System.out.println("Another parallel stream:");
+listOfIntegers
+    .parallelStream()
+    .forEach(e -> System.out.print(e + " "));
+System.out.println("");
+     
+System.out.println("With forEachOrdered:");
+listOfIntegers
+    .parallelStream()
+    .forEachOrdered(e -> System.out.print(e + " "));
+System.out.println("");
+This example consists of five pipelines. It prints output similar to the following:
+
+listOfIntegers:
+1 2 3 4 5 6 7 8
+listOfIntegers sorted in reverse order:
+8 7 6 5 4 3 2 1
+Parallel stream:
+3 4 1 6 2 5 7 8
+Another parallel stream:
+6 3 1 5 7 8 4 2
+With forEachOrdered:
+8 7 6 5 4 3 2 1
+This example does the following:
+
+The first pipeline prints the elements of the list listOfIntegers in the order that they were added to the list.
+The second pipeline prints the elements of listOfIntegers after it was sorted by the method Collections.sort.
+The third and fourth pipelines print the elements of the list in an apparently random order. Remember that stream operations use internal iteration when processing elements of a stream. Consequently, when you execute a stream in parallel, the Java compiler and runtime determine the order in which to process the stream's elements to maximize the benefits of parallel computing unless otherwise specified by the stream operation.
+The fifth pipeline uses the method forEachOrdered, which processes the elements of the stream in the order specified by its source, regardless of whether you executed the stream in serial or parallel. Note that you may lose the benefits of parallelism if you use operations like forEachOrdered with parallel streams.
+Side Effects
+A method or an expression has a side effect if, in addition to returning or producing a value, it also modifies the state of the computer. Examples include mutable reductions (operations that use the collect operation; see the section Reduction for more information) as well as invoking the System.out.println method for debugging. The JDK handles certain side effects in pipelines well. In particular, the collect method is designed to perform the most common stream operations that have side effects in a parallel-safe manner. Operations like forEach and peek are designed for side effects; a lambda expression that returns void, such as one that invokes System.out.println, can do nothing but have side effects. Even so, you should use the forEach and peek operations with care; if you use one of these operations with a parallel stream, then the Java runtime may invoke the lambda expression that you specified as its parameter concurrently from multiple threads. In addition, never pass as parameters lambda expressions that have side effects in operations such as filter and map. The following sections discuss interference and stateful lambda expressions, both of which can be sources of side effects and can return inconsistent or unpredictable results, especially in parallel streams. However, the concept of laziness is discussed first, because it has a direct effect on interference.
+
+Laziness
+All intermediate operations are lazy. An expression, method, or algorithm is lazy if its value is evaluated only when it is required. (An algorithm is eager if it is evaluated or processed immediately.) Intermediate operations are lazy because they do not start processing the contents of the stream until the terminal operation commences. Processing streams lazily enables the Java compiler and runtime to optimize how they process streams. For example, in a pipeline such as the filter-mapToInt-average example described in the section Aggregate Operations, the average operation could obtain the first several integers from the stream created by the mapToInt operation, which obtains elements from the filter operation. The average operation would repeat this process until it had obtained all required elements from the stream, and then it would calculate the average.
+
+Interference
+Lambda expressions in stream operations should not interfere. Interference occurs when the source of a stream is modified while a pipeline processes the stream. For example, the following code attempts to concatenate the strings contained in the List listOfStrings. However, it throws a ConcurrentModificationException:
+
+try {
+    List<String> listOfStrings =
+        new ArrayList<>(Arrays.asList("one", "two"));
+         
+    // This will fail as the peek operation will attempt to add the
+    // string "three" to the source after the terminal operation has
+    // commenced. 
+             
+    String concatenatedString = listOfStrings
+        .stream()
+        
+        // Don't do this! Interference occurs here.
+        .peek(s -> listOfStrings.add("three"))
+        
+        .reduce((a, b) -> a + " " + b)
+        .get();
+                 
+    System.out.println("Concatenated string: " + concatenatedString);
+         
+} catch (Exception e) {
+    System.out.println("Exception caught: " + e.toString());
+}
+This example concatenates the strings contained in listOfStrings into an Optional<String> value with the reduce operation, which is a terminal operation. However, the pipeline here invokes the intermediate operation peek, which attempts to add a new element to listOfStrings. Remember, all intermediate operations are lazy. This means that the pipeline in this example begins execution when the operation get is invoked, and ends execution when the get operation completes. The argument of the peek operation attempts to modify the stream source during the execution of the pipeline, which causes the Java runtime to throw a ConcurrentModificationException.
+
+Stateful Lambda Expressions
+Avoid using stateful lambda expressions as parameters in stream operations. A stateful lambda expression is one whose result depends on any state that might change during the execution of a pipeline. The following example adds elements from the List listOfIntegers to a new List instance with the map intermediate operation. It does this twice, first with a serial stream and then with a parallel stream:
+
+List<Integer> serialStorage = new ArrayList<>();
+     
+System.out.println("Serial stream:");
+listOfIntegers
+    .stream()
+    
+    // Don't do this! It uses a stateful lambda expression.
+    .map(e -> { serialStorage.add(e); return e; })
+    
+    .forEachOrdered(e -> System.out.print(e + " "));
+System.out.println("");
+     
+serialStorage
+    .stream()
+    .forEachOrdered(e -> System.out.print(e + " "));
+System.out.println("");
+
+System.out.println("Parallel stream:");
+List<Integer> parallelStorage = Collections.synchronizedList(
+    new ArrayList<>());
+listOfIntegers
+    .parallelStream()
+    
+    // Don't do this! It uses a stateful lambda expression.
+    .map(e -> { parallelStorage.add(e); return e; })
+    
+    .forEachOrdered(e -> System.out.print(e + " "));
+System.out.println("");
+     
+parallelStorage
+    .stream()
+    .forEachOrdered(e -> System.out.print(e + " "));
+System.out.println("");
+The lambda expression e -> { parallelStorage.add(e); return e; } is a stateful lambda expression. Its result can vary every time the code is run. This example prints the following:
+
+Serial stream:
+8 7 6 5 4 3 2 1
+8 7 6 5 4 3 2 1
+Parallel stream:
+8 7 6 5 4 3 2 1
+1 3 6 2 4 5 8 7
+The operation forEachOrdered processes elements in the order specified by the stream, regardless of whether the stream is executed in serial or parallel. However, when a stream is executed in parallel, the map operation processes elements of the stream specified by the Java runtime and compiler. Consequently, the order in which the lambda expression e -> { parallelStorage.add(e); return e; } adds elements to the List parallelStorage can vary every time the code is run. For deterministic and predictable results, ensure that lambda expression parameters in stream operations are not stateful.
+
+Note: This example invokes the method synchronizedList so that the List parallelStorage is thread-safe. Remember that collections are not thread-safe. This means that multiple threads should not access a particular collection at the same time. Suppose that you do not invoke the method synchronizedList when creating parallelStorage:
+
+List<Integer> parallelStorage = new ArrayList<>();
+The example behaves erratically because multiple threads access and modify parallelStorage without a mechanism like synchronization to schedule when a particular thread may access the List instance. Consequently, the example could print output similar to the following:
+
+Parallel stream:
+8 7 6 5 4 3 2 1
+null 3 5 4 7 8 1 2

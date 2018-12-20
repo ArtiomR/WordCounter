@@ -1,0 +1,592 @@
+History list LspCAD 6
+
+The list below shows feature additions and bugfixes for different builds
+of LspCAD 6.
+
+LspCAD 6.52 (2018-08-10)
++ Badly initialized references fixed, yet again!
++ Serious referencing flaw in previous build fixed
+
+LspCAD 6.52 (2018-08-05)
++ Display options for group-delay graps (among others) was not properly saved 
++ Badly initialitized reference for radiation components could cause 
+  program crash when store/recall buttons was used
+
+LspCAD 6.52 (2018-02-24)
++ Memory leak issue resolved
++ Problem with progam crash when store/recall buttons used frequently when 
+  emulator is running
++ Emulator Wave file mode supports 32bit floating point 2ch wave files
++ Emulator Wave file mode displays playout point
+
+LspCAD 6.51 (2017-12-27)
++ Corrected error in Extenteded OFF-AXIS modeling
+  for X-axis 
+
+LspCAD 6.51 (2017-10-28)
++ Loudspeaker unit (T/S model) : 
+ + Addition of extra delay parameter in "Other" to 
+   indicate acoustic center of driver.
+ + High frequency model as not applied correctly
++ Baffle component, possible to simulate room response only
+
+LspCAD 6.50 (2017-02-18)
++ Added graph that displays in-box pressure
++ Corrected error in OFF-AXIS data import that prevented correct reading of 
+  negative angle measurements
++ Corrected wrong export of impulse responses from emulator
+
+LspCAD 6.41 (2016-02-28)
++ Corrected model for TL speakers with decreasing cross-sectional area
++ Component area increased to 1920x1200
++ Descriptive text added to BiQuad filters
+
+LspCAD 6.41 (2015-04-03)
++ Added log Y axis option for impedance graph
+
+LspCAD 6.40 (2015-01-01)
++ Location of LspCAD 6 temp folder can now be specified by means of the environment 
+  variable LSPCAD6TEMP . This may solve a few strange copy, store and recall and 
+  optimizer undo issues that may occur in Windows 7 and 8.
++ Clone projects, copy/paste and undo in the optimizer did not work properly 
+  in the cases that the LspCAD 6 projects was on another disk that the LspCAD 6 
+  software.
++ Export function: Possible to export the off axis overlay graps as off axis
+  extended format.
++ DCX2694 : Computation of transfer functions for shelving and parametric EQ did
+  not match 100% with measurements
++ Extended off axis format : Sorting function added to make sure that data is 
+  interpolated correctly even though the angles are not specified in increasing 
+  order. Furthermore, for simplicity, combination of non-zero X and Y angles are 
+  discarded. This means that Y angle must be zero when non-zero X angles are 
+  measured and vice-versa.
++ Krash when impedance graph tab selected, fixed.
++ Klippel T/S data import of Sd parameter, fixed.
+
+LspCAD 6.38 (2012-11-19)
++ Export of generator impedance load did not work properly
++ Off-axis extended data could in some cases produce erroneous off 
+  axis response 
++ justMLS, FFT at low frequencies changed to 32768 for increased resolution
+
+LspCAD 6.38 (2011-12-30)
++ Export funtion 
+ + Problems with exporting TS driver response fixed
+ + Problems with exporting group delay fixed
++ Polar map update caused temporal error in SPL graph
++ Unnecessary warnings of missing files fixed
++ Suspension creep model improved according to paper 
+  Ritter et al "Modelling Viscoelasticity of Loudspeaker Suspensions using Retardation Spectra"
+  AES 129, paper 8217 
++ RMS current reading for inductors in summary
++ RMS voltage reading for capacitors in summary
+
+LspCAD 6.37 (2010-08-07)
++ Small LspCAD logo added to graphs
++ Highest node number was not possible to measure (voltage) 
+
+LspCAD 6.37 (2010-06-20)
++ Optimizer: Phase optimizer did not compute actual phase
++ TS driver: Praxis import not working properly
++ DXC2496
+ + Bypass and Invert checkbox did not have any effect   
+ + Step up/down of parametric EQ Q-value
++ Main window. Component list made scrollable
+
+LspCAD 6.37 (2010-05-15)
++ Polar map did not work with TS driver components
++ G(s)/G(z) component, 1st and 2nd order 
+  allpass added to BiQuad filter
++ TS import (Praxis, Klippel, Clio) did not always work
++ Diffraction analysis speed improved considerably especially 
+  when used with polar plots
++ Accuracy of loss model in horn component improved, 
+  works well with concatenated transmission line segments
++ Optimization of advanced boxes did not always work
++ Open component ialog boxes now update properly when optimizer runs 
++ Emulator, ASIO input channel range increased
+
+LspCAD 6.36 (2009-08-23)
++ Possible to optimize impedance with phase target
++ List of missing files presented when projects are opened
++ RichEdit controls replaced to solve issue with 
+  non-western character sets.
+
+LspCAD 6.35 (2009-05-09)
++ Use of recall buttons could result in loss of imported data
++ Sqrt domain error related to off axis simulations fixed
++ Delay value in driver component not correctly applied 
+  if "As drv 1" checked
+
+LspCAD 6.35 (2009-04-04)
++ Optimizer, modeling of Q-value wrong by a factor 2.0
++ Off axis power response, possible to select RMS sum instead of complex sum
+
+LspCAD 6.34 (2009-03-08)
++ Behringer DCX2496 and XTA. Change of EQ did not update EQ slope in dialog.
+
+LspCAD 6.34 (2009-02-14)
++ Valentines day version !
++ Min value for Vas changed to 0.001l
+
+LspCAD 6.34 (2008-12-14)
++ Occasional atan2 error fixed
++ Optimize checkbox did not work properly for advanced box mode
++ Recall sets could cause loss of reference to SPL/impedance data if files in 
+  different folders
++ Baffle diffraction simulations did not always update properly
++ Problems with relative paths fixed
++ Optional to use off axis phase lag modeling
+
+
+LspCAD 6.34 (2008-08-17)
++ Simulated SPL for speaker boxes, changed to true 4pi radiation 
+  -->  -6dB difference difference from previous versions.
+
+LspCAD 6.34 (2008-08-13)
++ Horn component, bugfix for conical horns
++ Locations of imported data stored as relative paths with project file location
+  as reference, this makes it more simple to distribute project files.
++ Behringer DCX2496, number of EQ elements increased to 9
+
+
+LspCAD 6.33 (2007-10-21)
++ Ke (semiself inductance), max value set to 10sH
++ Parametric EQ using BuQuad filters 
+   (Behringer, DBX pro, XTA and G(s)/G(z) component).
+  Erroneous implementation caused wrong implementation of Q factor setting.
+  The resulting Q was wrong by a factor 2.0.
++ Bandpass box (advanved box), rear box properties did not cause an update of the 
+  screen
++ Recall button did not update screen correctly if working/display range updated.
+
+
+LspCAD 6.33 (2007-06-30)
+  New stuff
++ Driver component
+ + Extended SPL data format
++ Larger loss factors allowed in ports.
++ Possible to optimize Ke in TS driver component
++ Digital BiQuad filter, Pole-shifter added
++ Complex impedance component, limitation to 200ohm removed.
++ Off axis simulation to +/-180 deg possible (also for polar plot)
+  Bug fixes
++ File close was missing in TS driver component, casued
+  problem when Store/Recall buttons used.
++ Extra check for window placement when program started.
++ Switch component, unstable simulation condition fixed.
++ Passive radiator box template
+ + Optimize main switch did not work properly in advanced mode.
+
+LspCAD 6.32 (2006-10-17)
++ justMLS
+ + Possible to set buffer size.
+ + Initial dry run time increased to 200ms
+
+LspCAD 6.32 (2006-10-13)
++ justMLS
+ + Measurements more stable
++ Behringer DCX2496, XTA and dbXPro component
+ + Bessel filter at low frequencies had wrong response due to 
+   fix build 2006-10-09
++ Node analysis
+ + Designs using horn component created close to unstable simulations 
+   due to fix in build 2006-10-09
+
+LspCAD 6.32 (2006-10-09)
++ Save button in main window
++ dbXPro component
+ + XO frequencies was not possible to modify
++ Behringer DCX2496 and dbXPro component
+ + Corner frequencies was not correct for odd order and
+   bessel filters at high frequencies
++ XTA component
+ + Corner frequencies was not correct for odd order and
+   bessel filters at high frequencies
++ Crossover emulator
+ + Support for ASIO cards with up to 18 output channels
+ + Input channel pairs 1&2-15&16 adressable (ASIO)
++ Optimizer
+ + Position of legend is kept during session
++ justMLS
+ + Possible to select DirectSound or ASIO soundcard access. 
+   For ASIO access it is also possible to select input for ch1 and ch2
+   (input ch 1-16)
+ + screen size can be adjusted
+ + soundcard setting saved in justmls.cfg	
+ + Store path for justmls.cfg and justmls.cal stable
+
+LspCAD 6.31 (2006-08-29)
++ Crossover emulator
+ + Digital input working (ASIO mode)
+  + Int24, Int32 and Float32 support.
+  + Security measure to avoid lockups under high CPU load conditions introduced.
+ + Crash bugs related to store/recall and also project save/switch solved
+ + Complexity of circular convolution reduced somewhat.  
+ + Excessive memory usage in digital filters fixed.
+ + Emulator streaming temporarly stopped when Recall buttons pressed
++ Optimizer
+ + Opt switch in groups not saved in project files  
+ + Store/Recall buttons disabled when optimizer running
++ Store/Recall buttons
+ + Recall executed twice by mistake when recall button pressed.
+ + Log10 sing error related to the use of GS, DCX, DBXpro and XTA components 
+   fixed.
+
+LspCAD 6.31 beta (2006-08-28)
++ Crossover emulator
+ + Digital input working (ASIO mode)
+
+LspCAD 6.31 beta (2006-06-25)
++ Store/Recall buttons
+ + Log10 sing error related to the use of GS, DCX, DBXpro and XTA components 
+   fixed.
+
+LspCAD 6.31 beta (2006-06-22)
++ Crossover emulator ASIO improvements
+ + Security measure to avoid lockups under high CPU load conditions introduced.
+ + Crash bugs related to store/recall and also project save/switch solved
++ Optimizer
+ + Opt switch in groups not saved in project files  
+
+LspCAD 6.31 beta (2006-06-20)
++ Crossover emulator ASIO improvements
+ + 2048 and 4096 sample buffer size option added 
+
+LspCAD 6.31 beta (2006-06-19)
++ Crossover emulator ASIO improvements
+ + Complexity of circular convolution reduced somewhat.  
+ + Excessive memory usage in digital filters fixed.
++ Store/Recall buttons
+ + Recall executed twice by mistake when recall button pressed.
+
+LspCAD 6.31 beta (2006-06-17)
++ Optimizer
+ + Store/Recall buttons disabled when optimizer running
++ Crossover emulator ASIO improvements
+ + Emulator streaming temporarly stopped when Recall buttons pressed
+ + Int24, Int32 and Float32 support.
+
+LspCAD 6.30 (2006-06-07)
++ Optimizer
+ + Setup of optimization simplified as "optimize with respect to .."
+   setting is removed
+ + XO point lock is improved with a lower risk of divergent behavior.
+ + Grouped components has a main optimize checkbox option, this makes it
+   possible to turn off optimization for entire filter sections with just
+   one operation
++ Crossover emulator
+ + ASIO support, possible to select input pair for multi channel input ASIO cards.
+ + Emulator was not closed correctly in certain conditions.
+ + Emulator is always on top.
+ + Noise bursts when R1..R8 buttons used removed
++ Store/recall sets saved at correct locations, for instance if one click on S3 and 
+  save the project the set will be available at R3 when the project is opened again.
++ Possible to set orientation of T/S drivers, side mounted drivers now possible to model.
++ Snapshot, a few bugs fixed.
++ Schema, can be printed with option fit meaning that the schema printout fills the entire 
+  paper.
++ Templates
+ + Template for Bandpass type II box corrected.
+ + Isobarik box building block added to templates
+
+ 
+LspCAD 6.30 beta (2006-03-19)
++ Crossover emulator
+ + ASIO support ! 
++ Store/recall sets, sets unique for each project, sets also stored with project files.
+  Note that files stored with this new release may not open correctly with older relases of 
+  LspCAD 6.
++ Clone graph, wrong window title.
++ Component snap turned off by default.
++ JustMLS, stability problems in 192kHz fixed, 65k MLS sequence added.
++ Odd behavior in insert passive HP/LP filter removed.
++ Baffle components, units for x,y,z coordinated changed to m.
++ 0 ohm resistances sometimes caused odd results.
++ Ke, additional semiself (units smH, semi millihenry!) inductance added to model
++ Lower limit on display and working range can be as high as 10000Hz
+
+LspCAD 6.20 (2005-11-23)
++ Klippel TS import, Sd, Vas and Mmd was not imported properly
+
+LspCAD 6.20 (2005-11-18)
++ R1..R8 button, 
+ + Large memory leak problem, partly fixed. 
+   Still some memory leak problem though.
+ + Crash problem when used with crossover emulator fixed.
+ + Noise problem when used with crossover emulator fixed.
++ T/S parameters, some parameters accidentially optimized 
+  even though they was not selected for optimization.
+
+LspCAD 6.20 (2005-11-03)
++ Port resonance frequencies not updated correctly in certain cases.
++ Store/Recall sets, severe bug (program crash) fixed.
++ Buttons/menu picks makes it posible to bring Main form, graph and schema to front,
+  very handy for low resolution monitors.
+
+LspCAD 6.20 (2005-10-11)
++ G(s) G(z) component, Digital FIR filter coefficient added, possible to simulate and export 
+  filter coefficients for FIR filters with filter orders 129..4097 with various window options.
+  Open examples/phase linear digital XO.lsp for an example how this can be used in a digital
+  phase linear loudspeaker system.
++ Crossover emulator, Variable Causal filter margin, this feature is needed to avoid that 
+  crossover emulator impulse response is chopped off in beginning
+
+LspCAD 6.20 (2005-10-09)
++ Store / Recall (S1...S8, R1..R8) sets saved when LspCAD closed, reloaded when LspCAD started.
++ Crossover emulator. Impulse response exported automatically to LspCAD folder when 
+  Circular convolution used. Filename of exported coefficients is 
+  LspCAD_6_xo_emulator_1.txt, LspCAD_6_xo_emulator_2.txt etc. 
+  Fileformat is ASCII text format with one coefficient per line. 
+  Impulse response can be used e.g by BruteFIR.
++ Near boundary reflections only case improved somewhat. 
++ Horn component
+ + Pens saved
+ + Loss model improved, possible to use component when simulating transmission lines.
++ Non linear/thermal modeling, warning message displayed when main switch in settings dialog 
+  is not enabled
+
+LspCAD 6.20 (2005-09-27)
++ Digital BiQuad filters (G(s)/G(z) component)
+ + Max sample rate increased to 200kHz
+ + Possible to quantize filter coefficients
++ Bassreflex port, possible to set end correction multiplier to simulate
+  eg port locations close to corners.
++ Polar map computation caused erroneous on axis response for individual drivers in 
+  SPL graph. 
+
+LspCAD 6.20 (2005-09-23)
++ Severe memory bug fixed, really odd that things worked with this bug, this
+  bug can explain alot of possible program crashes.
++ Size of KHF tool reduced slightly to fit in 1024x768 resolution
++ Warning text displayed if components are connected ie. if
+  + OP amp non-inverting input connected to GND
+  + Hot connector of T/S driver connected to GND
+  + Active components without buffering connected direct to passive components
+  The above cases will give wrong simulation results
+
+LspCAD 6.20 (2005-09-20)
++ KHF tool !, a universal tool for merging and adding SPL data.
++ New diffraction simulation, including 2nd order reflections and off-axis behavior.
++ Near boundary reflection simulation.
++ Advanced box simulation mode for closed/bassreflex/passive radiator and 
+  bandpass boxes. This is gives almost the same looks to the box modeling 
+  as in good old LspCAD 5!. This feature works for the boxes defined in the 
+  template section.
++ Voltage graph (pro version)
++ Current graph (pro version)
++ Transformer component takes N1:N2 ratio instead of 1:N ratio, component could 
+  sometimes give unstable results (fixed)
++ Schema scroll position unique for every project.
++ Store / Recall (S1...S8, R1..R8) presets completely redone. This time all 
+  components are stored/recalled, it is also possible to change topology between 
+  the sets.  
++ Last opened project files displayed in the File menu
++ Recompute Mmd/Mms bug fixed.
+
+LspCAD 6.20 (2005-09-08)
+ First 6.20 beta
+
+LspCAD 6.10 (2005-03-31)
++ Optimizer, lockup problem fixed, problem related to imported targets only
++ Snapshot Open and Save As functionality
++ Nonlinear BL(x) and Cms(x) modeling, two options, SWEPT mode or based on PSD.
++ Store / Recall, all components except Driver / TS driver components have store
+  recall functionality, NOTE THAT The store recall sets are not saved 
+  with the   project...
++ TS parameters, occasional odd values when parameters added
++ Negative angles possible in imported polar response
++ Port component, possible to increase loss in port.
+
+LspCAD 6.00 (2005-02-09)
++ Optimizer, some passive components was accidentally listed several
+  times in the checklist box.
++ Complex impedance component, this component makes it possible to import
+  e.g the measured impedance of an inductor. This can be useful in cases where
+  e.g the skin effect of a real inductor makes the built in inductance model
+  less accurate.
++ Dissipated power over resistors (pro version only).
+  If termal modeling is enabled (see ch 8 in manual) the computed
+  power dissipation in resistors is presented in the component list.
+  Note that for best match with reality it is recommended to import one of the
+  PSD files located in the lib folder as the power spectral
+  density of the music clips has an impact on how the is distributed over the
+  components.
++ Store/recall buttons. **This feature is still under construction**.
+  One limitation is that the stores values are not yet saved.
+  Another limitation is that this currently works ONLY FOR passive components.
+  Both limitations above will be resolved in a later build.
+
+LspCAD 6.00 (2005-02-02)
++ Inverting drivers did not have an effect in the crossover emulator
++ Optimizer, a checklist box is added where one can switch on or 
+  off the main optimization switch for passive components 
+  (click on the button with caption ">>>" in upper left corner 
+  in optimizer dialog to see list)
+
+LspCAD 6.00 (2005-01-27)
++ Malfunction if projects with G(s) BiQuad components opened (sorry Pat)
+
+LspCAD 6.00 (2005-01-25)
++ Maximum vertical size of main window reduced somewhat
+  (to fit better with 1024x768 resolution)
++ Open project file bug fixed. Bug caused occasional loss of components
+  when project was opened. 
++ Number added to beginning in project and TS driver list box
+  to increase readability.
++ Prinout of schemas became a mess of current and previous schemas
+
+LspCAD 6.00 (2005-01-13)
++ Possible to select what cone excursions that should be visible in
+  cone excursion graph
++ Undo button disabled if clicked, there is only one undo level
+  possible after all
++ Possible to get relative y-axis readings if right mouse button is clicked
+  in graph
++ Yet another rare node numbering bug fixed.
++ Red warning circle if components are loaded with passive circuits when the
+  simulation does not allow this, for instance G(s) components should not be
+  loaded by passive components such as resistors, driver units et.c.
++ Working waveguide component, can be used for horn and possibly also TL
+  modeling. Also possible to simulate U-frame and H-frame dipole
+  loudspeakers with this component.
++ Possible to simulate dipole loudspeaker (baffle type), does not give a correct
+  off axis response though.
+
+LspCAD 6.00 (2004-12-15)
++ Rare bug when working range changed fixed
++ Main window widened somewhat
++ Termal modeling enable (main switch) in settings dialog
++ Save session option makes it possible to save all open projects in one file.
++ Box load factor can be adjusted in boxload settings
+
+LspCAD 6.00 (2004-12-05)
++ Show component list button working can be used to hide compent list 
++ Occasional erroneous underlines/italics in component list removed
+
+LspCAD 6.00 (2004-11-30)
++ Use fc multiplier option in G(s) component did not work properly
++ Printout problem (blank pages) solved
++ Optimize variable Q target, highpass and lowpass Q 
+  values interchanged
++ Code prepared for standard version
+
+LspCAD 6.00 (2004-11-22)
++ Uninitialized variable sometimes caused odd behavior,
+  for instance impossible to open settings for passive radiator
++ Warning message if wizard group is ungrouped
++ In TS driver parameter list, offset error caused wrong paramter 
+  to be edited when a line was double clicked.
++ Possible to see voice coil inductance only on load impedance
++ Config dialogs are closed when one actively close them or when one 
+  open another config dialog   
+
+LspCAD 6.00 (2004-11-15)
++ Passive HP/LP filter wizard added
+  (right click in schema in edit mode, select Insert...).
+
+LspCAD 6.00 (2004-11-08)
++ Screen redraw in edit mode made faster
+
+LspCAD 6.00 (2004-11-04)
++ Rare problem with cascaded wire components fixed
++ LSPCAD6WORKINGDIR was not working properly if '\'
+  character at the end
+
+LspCAD 6.00 (2004-11-02)
++ Program crash bug related to the use of baffle components fixed.
++ Dropdown list for range setting changed to readonly
++ Extra transfer function offset/enable not saved in project file
++ Scrolling problem and fixed first row in TS parameter list fixed
++ LSPCAD6WORKINGDIR environment variable makes it possible to have
+  another directory than the LspCAD folder as default working directory
++ Baffle diffraction setting for radiation component not saved
+
+LspCAD 6.00 (2004-10-26)
++ Special Win98 SE patch needed to make sure that
+  Settings/Optimizer/Emulator dialog can always be opened.
++ Diffraction analysis error fixed.
++ TS driver Vas got wrong value when fs changed
++ Possible to open .unt files generated in older versions of LspCAD
++ LambdaS (creep factor for Cms) added to list of TS paramters.
+
+LspCAD 6.00 (2004-10-17)
++ USB copy protection dongle operating
++ Wizard for G(s) LP/HP filtrers
++ Color distribution for polar map improved
++ Memory leak fixed.
++ Clipboard cleared when program closed
++ Default TS values set to (almost) zero.
++ Problem with imported files not in same path as project file fixed.
++ A few typos fixed.
+
+
+LspCAD 5.99.58 (2004-10-05)
++ Log10 sing error fixed
+
+
+LspCAD 5.99.58 (2004-10-04)
++ Severe bug caused program freeze when templates was opened
++ XO point still visible if impedance optimization selected
++ Driver set feature removed
++ Export of tolerance analaysis contained too many frequency point
++ Startwindow and about box added
++ Extra transfer function with two or more radiator bug fixed
+
+LspCAD 5.99.57 (2004-09-17)
++ Possible to use extra transfer function for Driver, TSDriver,
+  Port and ABR components to include effects of eg. external room /cabinet
+  simulation.
++ Horn component removed, will be replaced with a model that can be trusted
+  later
+
+LspCAD 5.99.56 (2004-09-15)
++ TS parameter import, the filename is set to same as name of imported file
++ CALSOD engine menu pick removed from LspCAD 5
++ Import of LspCAD 5 .unt files possible
++ SPL graph headroom in snapshot
++ Warning message if TS parameters are not saved when project(s) are closed.
++ Level problem for TS drivers whe input voltage increased fixed
++ Wrong graph size in snapshot fixed.
+
+LspCAD 5.99.55 (2004-09-10)
++ Bug releated to change of number of analysis points in projects with TS drivers fixed.
++ Polarmap selectable margin for Normalize to 0 deg option
++ BiQuad filter in G(s)/G(z) component
++ Graphs somtimes spilling outside grid fixed
++ Legend problem (part of rectangle missing) fixed
+
+LspCAD 5.99.54 (2004-09-04)
++ Polar map
+ + grayscale option
+ + polar map tied to project
++ Printout of snapshot and tolerance analysis also possible
++ LspCAD 5.25 can be started from LspCAD 6, Don't try the CALSOD engine option in  
+  the bundled LspCAD 5.25, doing so will cause a program crash
+
+LspCAD 5.99.53 (2004-09-02)
++ Left click in group pops up a small dropdown box
++ Potential krashproblem when loading projects avoided
++ Possible to have a user defined text (callout) in each graph (not polarmap)
+  + look for a small grey rectangle in the graph
+  + right click inside it and enter a few lines of text..
+  + to move the text box, click and hold the left button
+    inside the box and move..
++ Printout of graphs and schema possible
++ Scroll problem in TS driver edit fixed
++ Polar map normalize to 0 deg improved slightly
+
+
+LspCAD 5.99.52 (2004-08-29)
++ Numerous problems related to groups and what happens when they are
+  cloned/deleted. Also problem with lost references fixed.
+  Group edit dialog, two different dialogs replaced with one, update problems
+  fixed.
++ Right click in schema behavior improved
++ Polar map
+  + different normalization options
+  + improved color map
+  + cursor reading
++ Graphs hidden in edit mode
++ SPL graph problem when graph was sized up alot fixed.
+
